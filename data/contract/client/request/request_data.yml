@@ -1,0 +1,285 @@
+# 获取用户账户信息
+account_info:
+  path: /v1/account/info
+  method: get
+  route: /user
+# 开通合约
+account_open:
+  path: /v1/account/open
+  method: post
+  route: /user
+# 收藏交易对
+collection_add:
+  path: /v1/user/collection/add
+  method: post
+  route: /user
+# 收藏交易对列表
+collection_list:
+  path: /v1/user/collection/list
+  method: get
+  route: /user
+# 取消收藏交易对
+collection_cancel:
+  path: /v1/user/collection/cancel
+  method: post
+  route: /user
+# 获取用户账务流水
+balance_bills:
+  path: /v1/balance/bills
+  method: get
+  route: /user
+# 获取用户资金
+balance_list:
+  path: /v1/balance/list
+  method: get
+  route: /user
+# 获取用户单币种资金
+balance_detail:
+  path: /v1/balance/detail
+  method: get
+  route: /user
+# 资金划转
+balance_transfer:
+  path: /v1/balance/transfer
+  method: post
+  route: /user
+# 修改自动追加保证金
+auto_margin:
+  path: /v1/position/auto-margin
+  method: post
+  route: /user
+# 调整杠杆倍数
+adjust_leverage:
+  path: /v1/position/adjust-leverage
+  method: post
+  route: /user
+# 修改保证金
+position_margin:
+  path: /v1/position/margin
+  method: post
+  route: /user
+# 获取ADL信息
+position_adl:
+  path: /v1/position/adl
+  method: get
+  route: /user
+# 查看所有持仓
+position_list:
+  path: /v1/position/list
+  method: get
+  route: /user
+# 一键平仓
+position_list_close_all:
+  path: /v1/position/close-all
+  method: post
+  route: /user
+# 查询单个交易对杠杆分层
+leverage_bracket_detail:
+  path: /v1/public/leverage/bracket/detail
+  method: get
+  route: /market
+# 查询所有交易对杠杆分层
+leverage_bracket_list:
+  path: /v1/public/leverage/bracket/list
+  method: get
+  route: /market
+# 交易对币种
+symbol_coins:
+  path: /v1/public/symbol/coins
+  method: get
+  route: /market
+#获取单个交易对的配置信息
+symbol_detail:
+  path: /v1/public/symbol/detail
+  method: get
+  route: /market
+#获取所有交易对的配置信息
+symbol_list:
+  path: /v1/public/symbol/list
+  method: get
+  route: /market
+#  获取指定交易对的聚合行情信息
+qoute_agg_ticker:
+  path: /v1/public/q/agg-ticker
+  method: get
+  route: /market
+# 获取全交易对的聚合行情信息
+qoute_agg_tickers:
+  path: /v1/public/q/agg-tickers
+  method: get
+  route: /market
+# 获取单个交易对的指数价格
+qoute_symbol_index_price:
+  path: /v1/public/q/symbol-index-price
+  method: get
+  route: /market
+#  获取单个交易对的标记价格
+qoute_symbol_mark_price:
+  path: /v1/public/q/symbol-mark-price
+  method: get
+  route: /market
+# 撤销委托
+order_entrust_cancel:
+  path: /v1/order-entrust/cancel
+  method: post
+  route: /trade
+# 撤销所有委托
+order_entrust_cancel_all:
+  path: /v1/order-entrust/cancel-all
+  method: post
+  route: /trade
+# 查看所有委托
+order_entrust_cancel_list:
+  path: /v1/order-entrust/list
+  method: get
+  route: /trade
+# 撤销订单
+cancel:
+  path: /v1/order/cancel
+  method: post
+  route: /trade
+# 撤销所有订单
+cancel_all:
+  path: /v1/order/cancel-all
+  method: post
+  route: /trade
+# 下单
+create:
+  path: /v1/order/create
+  method: post
+  route: /trade
+# 批量下单
+create_batch:
+  path: /v1/order/create-batch
+  method: post
+  route: /trade
+# 根据id查询订单
+detail:
+  path: /v1/order/detail
+  method: get
+  route: /trade
+# 查询订单
+list:
+  path: /v1/order/list
+  method: get
+  route: /trade
+# 查询交易明细
+trade_list:
+  path: /v1/order/trade-list
+  method: get
+  route: /trade
+# 查询历史订单
+list_history:
+  path: /v1/order/list-history
+  method: get
+  route: /trade
+#  根据id列表查询订单（订单id用,分隔）
+list_by_ids:
+  path: /v1/order/list-by-ids
+  method: post
+  route: /trade
+#获取交易对的最新成交信息
+deal:
+  path: /v1/public/q/deal
+  method: get
+  route: /market
+#获取交易对的深度信息
+depth:
+  path: /v1/public/q/depth
+  method: get
+  route: /market
+#获取资金费率
+funding_rate:
+  path: /v1/public/q/funding-rate
+  method: get
+  route: /market
+#获取资金费率记录
+funding_rate_record:
+  path: /v1/public/q/funding-rate-record
+  method: get
+  route: /market
+#获取交易对的指数价格
+index_price:
+  path: /v1/public/q/symbol-index-price
+  method: get
+  route: /market
+#获取交易对的K线信息
+kline:
+  path: /v1/public/q/kline
+  method: get
+  route: /market
+#获取交易对的标记价格
+mark_price:
+  path: /v1/public/q/symbol-mark-price
+  method: get
+  route: /market
+#获取交易对的行情信息
+ticker:
+  path: /v1/public/q/ticker
+  method: get
+  route: /market
+#获取全交易对的行情信息
+tickers:
+  path: /v1/public/q/tickers
+  method: get
+  route: /market
+# 撤销所有计划委托
+cancel_all_plan:
+  path: /v1/entrust/cancel-all-plan
+  method: post
+  route: /trade
+# 撤销所有止盈止损
+cancel_all_profit_stop:
+  path: /v1/entrust/cancel-all-profit-stop
+  method: post
+  route: /trade
+# 撤销计划委托
+cancel_plan:
+  path: /v1/entrust/cancel-plan
+  method: post
+  route: /trade
+# 撤销止盈止损
+cancel_profit_stop:
+  path: /v1/entrust/cancel-profit-stop
+  method: post
+  route: /trade
+# 创建计划委托
+create_plan:
+  path: /v1/entrust/create-plan
+  method: post
+  route: /trade
+# 创建止盈止损
+create_profit:
+  path: /v1/entrust/create-profit
+  method: post
+  route: /trade
+# 根据id查询计划委托
+plan_detail:
+  path: /v1/entrust/plan-detail
+  method: get
+  route: /trade
+# 查询计划委托
+plan_list:
+  path: /v1/entrust/plan-list
+  method: get
+  route: /trade
+# 查询历史计划委托
+plan-list-history:
+  path: /v1/entrust/plan-list-history
+  method: get
+  route: /trade
+# 根据id查询止盈止损
+profit_detail:
+  path: /v1/entrust/profit-detail
+  method: get
+  route: /trade
+# 查询止盈止损
+profit_list:
+  path: /v1/entrust/profit-list
+  method: get
+  route: /trade
+# 修改止盈止损
+update_profit_stop:
+  path: /v1/entrust/update-profit-stop
+  method: post
+  route: /trade

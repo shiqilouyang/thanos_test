@@ -1,0 +1,90 @@
+test_success:
+  # 正确输入交易对、page、size
+#  parameter_all_correct:
+#    name: 正确输入交易对、页数、页面大小
+#    parameter:
+#      symbol: dao_usdt
+#      direction: NEXT
+#      limit: 2
+#      id: 61621037145529024
+#    expected_result:
+#      msg: success
+  # 正确输入交易对，page、size不传
+  only_symbol:
+    name: main-只传入交易对名称
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msg: success
+
+test_unsuccess:
+  # 无效的交易对
+  invail_symbol:
+    name: 无效的交易对
+    parameter:
+      symbol: hw_btc
+      page: 1
+      size: 6
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+  # page为非数字
+  page_is_not_num:
+    name: page为非数字
+    parameter:
+      symbol: dao_usdt
+      page: liushi
+      size: 6
+    expected_result:
+      msgInfo: failure
+      msg: invalid param
+  # page 为0
+  page_is_0:
+    name: page为0
+    parameter:
+      symbol: dao_usdt
+      page: 0
+      size: 6
+    expected_result:
+      msgInfo: failure
+      msg: invalid size
+  # page为负数
+  page_is_minus:
+    name: page为负数
+    parameter:
+      symbol: dao_usdt
+      page: -1
+      size: 6
+    expected_result:
+      msgInfo: failure
+      msg: invalid size
+  # size为0
+  size_is_0:
+    name: page为0
+    parameter:
+      symbol: dao_usdt
+      page: 1
+      size: 0
+    expected_result:
+      msgInfo: failure
+      msg: invalid size
+# size为负数
+  size_is_minus:
+    name: page为负数
+    parameter:
+      symbol: dao_usdt
+      page: 1
+      size: -6
+    expected_result:
+      msgInfo: failure
+      msg: invalid size
+# size为非数字
+  size_is_not_num:
+    name: page为非数字
+    parameter:
+      symbol: dao_usdt
+      page: liushi
+      size: 6
+    expected_result:
+      msgInfo: failure
+      msg: invalid param

@@ -1,0 +1,44 @@
+# 获取交易对的指数价格接口测试用例
+# 正向用例
+test_success:
+  # 只传入正确交易对
+  only_symbol:
+    name: main-正确输入交易对
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+# 反向的测试用例
+test_unsuccess:
+   #无效的交易对
+  invalid_symbol:
+      name: 无效的交易对
+      parameter:
+        size: 5
+        symbol: dao_xt
+      expected_result:
+          msg: invalid symbol
+  # size非数字
+  size_not_num:
+    name: size非数字
+    parameter:
+      size: abc
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid param
+# size为0
+  size_is_0:
+    name: size为0
+    parameter:
+      size: 0
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_size
+# size为负数
+  size_is_minus:
+    name: size为负数
+    parameter:
+      size: 0
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_size

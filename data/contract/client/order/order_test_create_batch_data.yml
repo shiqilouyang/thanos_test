@@ -1,0 +1,47 @@
+# 批量下单的测试用例
+# 正向
+create_batch_success:
+  # 下单个订单：市价买空
+  just_one:
+    name: main-单个市价买空单
+    parameter:
+      list: '[{orderSide: BUY, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: dao_usdt, price: dao_price,timeInForce: GTX }]'
+    expected_result:
+      msgInfo: success
+
+  # 各种条件覆盖的多条下单：GTX买多、GTC买空、IOC限价平多、FOK限价平空，市价买多
+  all:
+    name: 覆盖所有买卖方向、仓位方向、模式下的多个下单
+    parameter:
+      list: '[{orderSide: BUY, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: dao_usdt, price: dao_price,timeInForce: GTX},
+        {orderSide: SELL, orderType: LIMIT, origQty: 5, positionSide: SHORT, symbol: dao_usdt, price: dao_price,timeInForce: GTC},
+        {orderSide: SELL, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: dao_usdt, price: dao_price,timeInForce: IOC},
+        {orderSide: BUY, orderType: LIMIT, origQty: 5, positionSide: SHORT, symbol: dao_usdt, price: dao_price,timeInForce: FOK},
+        {orderSide: BUY, orderType: MARKET, origQty: 5, positionSide: LONG, symbol: dao_usdt, timeInForce: IOC}]'
+    expected_result:
+     msgInfo: success
+
+# 反向用例
+create_batch_failed:
+# 多个订单中一个订单失败
+  one_errer:
+    name: 多个订单中一个订单失败
+    parameter:
+      list: '[{orderSide: BU, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: dao_usdt, price: dao_price,timeInForce: GTX},
+        {orderSide: SELL, orderType: LIMIT, origQty: 5, positionSide: SHORT, symbol: dao_usdt, price: dao_price,timeInForce: GTC},
+        {orderSide: SELL, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: dao_usdt, price: dao_price,timeInForce: IOC},
+        {orderSide: BUY, orderType: LIMIT, origQty: 5, positionSide: SHORT, symbol: dao_usdt, price: dao_price,timeInForce: FOK},
+        {orderSide: BUY, orderType: MARKET, origQty: 5, positionSide: LONG, symbol: dao_usdt, timeInForce: IOC}]'
+    expected_result:
+     msgInfo: failure
+# 多个订单中多个订单失败
+  multi_errer:
+    name: 多个订单中多个失败的订单
+    parameter:
+      list: '[{orderSide: BUY, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: dao_usdt, price: dao_price,timeInForce: GTX},
+        {orderSide: SELL, orderType: asd, origQty: 5, positionSide: SHORT, symbol: dao_usdt, price: dao_price,timeInForce: GTC},
+        {orderSide: SELL, orderType: LIMIT, origQty: 5, positionSide: LONG, symbol: usdt, price: dao_price,timeInForce: IOC},
+        {orderSide: BUY, orderType: LIMIT, origQty: 5, positionSide: SHORT, symbol: dao_usdt, price: dao_price,timeInForce: FOK},
+        {orderSide: BUY, orderType: MARKET, origQty: 5, positionSide: LONG, symbol: dao_usdt, timeInForce: IOC}]'
+    expected_result:
+     msgInfo: failure

@@ -1,0 +1,100 @@
+# 正向
+# 只输入订单ID
+trade_list_success:
+    # 只输入订单ID
+    only_order_id:
+      name: main-只输入订单ID
+      parameter:
+        orderId:
+      expected_result:
+        msgInfo: success
+# 订单id、page、size组合查询
+    all_parameter:
+      name: main-订单id、page、size组合查询
+      parameter:
+        orderId:
+        page: 1
+        size: 10
+      expected_result:
+        msgInfo: success
+# 反向
+trade_list_failed:
+# 不输入订单
+  no_order_id:
+    name: 不输入订单
+    parameter:
+      page: 1
+      size: 10
+    expected_result:
+      msgInfo: failure
+      msg: invalid_order_id
+# 订单非数字
+  order_id_not_num:
+    name: 订单非数字
+    parameter:
+      orderId: asdf
+      page: 1
+      size: 10
+    expected_result:
+      msgInfo: failure
+      msg: invalid param
+# 页码非数字
+  page_not_num:
+    name: 页码非数字
+    parameter:
+      orderId: mongo
+      page: adf
+      size: 10
+    expected_result:
+      msgInfo: failure
+      msg: invalid param
+# 页码为0
+  page_is_0:
+    name: 页码为0
+    parameter:
+      orderId: mongo
+      page: 0
+      size: 10
+    expected_result:
+      msgInfo: failure
+      msg: invalid_page
+# 页码负数 bug未修复
+  page_is_minus:
+    name: 页码负数
+    parameter:
+      orderId: mongo
+      page: -1
+      size: 10
+    expected_result:
+      msgInfo: failure
+      msg: invalid_page
+# 单页数非数字
+  size_not_num:
+    name: 单页数非数字
+    parameter:
+      orderId: mongo
+      page: 1
+      size: adfa
+    expected_result:
+      msgInfo: failure
+      msg: invalid param
+# 单页数为0 bug未修复
+  size_is_0:
+    name: 单页数为0
+    parameter:
+      orderId: mongo
+      page: 1
+      size: 0
+    expected_result:
+      msgInfo: failure
+      msg: invalid_size
+# 单页数为负数
+  size_is_minus:
+    name: 单页数为负数
+    parameter:
+      orderId: mongo
+      page: 1
+      size: 0
+    expected_result:
+      msgInfo: failure
+      msg: invalid_size

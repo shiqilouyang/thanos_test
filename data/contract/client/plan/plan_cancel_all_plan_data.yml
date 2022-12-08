@@ -1,0 +1,73 @@
+# 正向测试用例
+# 管理端关闭该交易对的交易权限撤销
+cancel_all_plan_success:
+  # 1、不传交易对撤销所有计划委托
+  cancel_all:
+    name: main-不传交易对撤销所有计划委托
+    # （1）创建不同交易对的计划委托
+    create_parameter_1:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: MARK_PRICE
+      price:
+      stopPrice:
+    create_parameter_2:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: '5'
+      positionSide: LONG
+      symbol: ada_usdt
+      timeInForce: GTX
+      triggerPriceType: MARK_PRICE
+      price:
+      stopPrice:
+    expected_result:
+      msgInfo: success
+  # 2、传交易对撤销该交易对计划委托
+  cancel_symbol:
+    name: main-传交易对撤销该交易对计划委托
+    # （1）创建不同交易对的计划委托
+    create_parameter_1:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: '8'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: MARK_PRICE
+      price:
+      stopPrice:
+    create_parameter_2:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: MARK_PRICE
+      price:
+      stopPrice:
+    expected_result:
+      msgInfo: success
+# 反向测试用例
+cancel_all_plan_failed:
+  # 1、无效的交易对
+  invailed_symbol:
+    name: 无效的交易对
+    parameter:
+      symbol: adfa
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+  # 2、交易对非字符串
+  symbol_not_string:
+    name: 交易对非字符串
+    parameter:
+      symbol: 1234
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol

@@ -1,0 +1,53 @@
+# 根据止盈止损id撤销止盈止损
+# 正向
+cancel_profit_success:
+  # 1、撤销多仓的止盈止损
+  cancel_long_profit:
+    name: main-撤销多仓的止盈止损
+    create_profit_parameter:
+      symbol: dao_usdt
+      origQty: 5
+      positionSide: LONG
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: success
+      state: 4
+  #2、撤销空仓的止盈止损
+  cancel_short_profit:
+    name: 撤销空仓的止盈止损
+    create_profit_parameter:
+      symbol: dao_usdt
+      origQty: 5
+      positionSide: SHORT
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: success
+      state: 4
+# 反向
+cancel_profit_failed:
+  # 1、不输入id
+  cancel_long_profit:
+    name: 不输入id
+    parameter:
+     profit_id:
+    expected_result:
+      msgInfo: failure
+      msg: Interval Service Error
+  # 2、不存在的id
+  invalid_profit_id:
+    name: 不存在的id
+    parameter:
+     profit_id: 1234
+    expected_result:
+      msgInfo: failure
+      msg: invalid_entrust
+  # 3、id非数字
+  profit_id_not_num:
+    name: id非数字
+    parameter:
+     profit_id: adfads
+    expected_result:
+      msgInfo: failure
+      msg: invalid param

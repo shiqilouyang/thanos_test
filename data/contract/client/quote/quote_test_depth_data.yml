@@ -1,0 +1,83 @@
+# 获取交易对深度信息
+# 正向的用例数据
+test_correct:
+  # 正确输入档位和交易对
+  both_corect:
+    name: main-正确输入档位和交易对
+    parameter:
+      level: 5
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+  # 档位为1的用例（边界值）
+  level_is_1:
+    name: main-档位为1
+    parameter:
+      level: 1
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+  #档位为50的用例（边界值）
+  level_is_50:
+    name: main-档位为50
+    parameter:
+      level: 50
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+# 反向用例
+test_unsuccessful:
+  # 档位为空
+  level_is_none:
+    name: 档位为空
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_level
+  # 交易对为空
+  symbol_is_none:
+    name: 交易对为空
+    parameter:
+      level: 8
+    expected_result:
+      msg: invalid symbol
+  # 档位为浮点数
+  level_is_flaot:
+    name: 档位为浮点数
+    parameter:
+      level: 1.1
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid param
+  # 档位为负数
+  level_is_muins:
+    name: 档位为负数
+    parameter:
+      level: -3
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_level
+ # 档位为字符串
+  level_is_string:
+    name: 档位为字符串
+    parameter:
+      level: 六十
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid param
+ # 档位为0
+  level_is_0:
+    name: 档位为0
+    parameter:
+      level: 0
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_level
+   #交易对不存在
+  symbol_nonexistent:
+    name: 交易对不存在
+    parameter:
+      level: 7
+      symbol: hw_usdt
+    expected_result:
+      msg: invalid symbol

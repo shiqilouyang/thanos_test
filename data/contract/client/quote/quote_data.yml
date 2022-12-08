@@ -1,0 +1,134 @@
+get_deal:
+  # 获取交易对的最新成交信息
+  # 用例场景,数量,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,num,symbol,except_result,except_returncode,except_msg
+  - ["获取最新成交信息正常",10,"btc_usdt", success, 0, "btc_usdt"]
+  - ["交易对为空",10,"", failure, 1, "invalid symbol"]
+  - ["交易对不存在",10,"bt#_usdt", failure, 1, "invalid symbol"]
+  - ["交易对开头有空格",10," btc_usdt", failure, 1, "invalid symbol"]
+  - ["交易对结尾有空格",10,"btc_usdt ", failure, 1, "invalid symbol"]
+  - ["数量为空","","btc_usdt", success, 0, ""]
+  - ["数量为0",0,"btc_usdt", success, 0, ""]
+  - ["数量类型为字符串","ab22","btc_usdt", failure, 1, "invalid param"]
+  - ["数量为浮点数",10.01,"btc_usdt", failure, 1, "invalid param"]
+  - ["数量为负整数",-310,"btc_usdt", failure, 1, ""]
+  
+get_depth:
+  # 获取交易对的深度信息
+  # 用例场景,档位,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,level,symbol,except_result,except_code,except_msg
+  - ["获取交易对的深度信息正常",10, "btc_usdt",success, 0, ""]
+  - ["档位为空","btc_usdt", "",failure, 1, ""]
+  - ["档位为浮点数","", "btc_usdt",failure, 1, ""]
+  - ["档位为负数","","btc_usdt", failure, 1, ""]
+  - ["档位为字符串","123ff", "btc_usdt",failure, 1, ""]
+  - ["档位数量为0",0, "btc_usdt",success, 0, ""]
+  - ["档位数量为1",1, "btc_usdt",success, 0, ""]
+  - ["档位数量为50",50,"btc_usdt", success, 0, ""]
+  - ["档位数量为51",51,"btc_usdt", failure, 1, ""]
+  - ["交易对为空",10, "",failure, 1, ""]
+  - ["交易对不存在",10,"xbtc_usdt", failure, 1, ""]
+  - ["交易对开头有空格",10, " btc_usdt",failure, 1, ""]
+  - ["交易对结尾有空格",10, "btc_usdt ",failure, 1, ""]
+  
+get_funding_rate:
+  # 获取资金费率
+  # 用例场景,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,symbol,except_result,except_code,except_msg
+  - ["获取交易对资金费率正常","btc_usdt", success, 0, "fundingRate"]
+  - ["交易对为空","", failure, 1, "invalid symbol"]
+  - ["交易对不存在","abtc_usdt", failure, 1, "invalid symbol"]
+  - ["交易对开头有空格"," btc_usdt", failure, 1, "invalid symbol"]
+  - ["交易对结尾有空格","btc_usdt ", failure, 1, "invalid symbol"]
+  
+get_funding_rate_record:
+  # 获取资金费率记录
+  # 用例场景,交易对,页数,每页数量,预期结果,预期返回代码,预期返回错误信息
+  # scene,symbol,page,size,except_result,except_code,except_msg
+  - ["获取资金费率记录，页数和每页数量为空","btc_usdt","","", success, 0, "fundingRate"]
+  - ["获取资金费率记录，页数和每页数量不为空","btc_usdt",1,10, success, 0, "fundingRate"]
+  - ["每页数量为空，页数不为空","btc_usdt","",10, success, 0, "fundingRate"]
+  - ["每页数量不为空，页数为空","btc_usdt",1,"", success, 0, "fundingRate"]
+  - ["指定的页数和每页数量，记录为空","btc_usdt",1000,100, success, 0, ""]
+  - ["交易对为空","","","", failure, 1, "invalid symbol"]
+  - ["交易对不存在","abtc_usdt","","", failure, 1, "invalid symbol"]
+  - ["交易对开头有空格"," btc_usdt","","", failure, 1, "invalid symbol"]
+  - ["交易对结尾有空格","btc_usdt ","","", failure, 1, "invalid symbol"]
+  
+get_index_price:
+  # 获取交易对的指数价格
+  # 用例场景,交易对,条数,预期结果,预期返回代码,预期返回错误信息
+  # scene,symbol,size,except_result,except_code,except_msg
+  - ["获取指数价格正常,条数不为空","btc_usdt",10, success, 0, "p"]
+  - ["获取指数价格正常,条数为空","btc_usdt","", success, 0, "p"]
+  - ["条数为0","btc_usdt",0, success, 1, ""]
+  - ["交易对为空","","", failure, 1, "invalid symbol"]
+  - ["交易对不存在","abtc_usdt","", failure, 1, "invalid symbol"]
+  - ["交易对开头有空格"," btc_usdt","", failure, 1, "invalid symbol"]
+  - ["交易对结尾有空格","btc_usdt ","", failure, 1, "invalid symbol"]
+  - ["条数类型为字符串","btc_usdt","12", failure, 1, "invalid size"]
+  - ["条数为浮点数","btc_usdt",12.34, failure, 1, "invalid size"]
+  - ["条数为负整数","btc_usdt",-3, failure, 1, "invalid size"]
+  
+get_kline:
+  # 获取交易对的k线信息
+  # 用例场景,时间间隔,限制数,交易对,结束时间,起始时间,预期结果,预期返回代码,预期返回错误信息
+  # scene,interval,limit,symbol,endTime,startTime,except_code,except_msg
+  - ["获取K线数据正常","1m",10,"btc_usdt","","", success, 0, "s"]
+  - ["交易对为空","1m",10,"","","", failure, 1, "invalid symbol"]
+  - ["交易对不存在","1m",10,"abtc_usdt","","", failure, 1, "invalid symbol"]
+  - ["交易对开头有空格","1m",10," btc_usdt","","", failure, 1, "invalid symbol"]
+  - ["交易对结尾有空格","1m",10," btc_usdt","","", failure, 1, "invalid symbol"]
+  - ["时间间隔为空","",10,"btc_usdt","","", success, 0, "invalid param"]
+  - ["时间间隔不存在","3f",10,"btc_usdt","","", failure, 1, "invalid param"]
+  - ["限制数为空","1m","","btc_usdt","","", failure, 1, "invalid param"]
+  - ["限制数为0","1m",0,"btc_usdt","","", success, 0, ""]
+  - ["限制数为字符串","1m","10f","btc_usdt","","", failure, 1, "invalid param"]
+  - ["限制数为浮点数","1m",12.34,"btc_usdt","","", failure, 1, "invalid param"]
+  - ["限制数为负整数","1m",-5,"btc_usdt","","", failure, 1, "invalid param"]
+  - ["时间间隔为0","1m",10,"btc_usdt",1636962750,1636962750, success, 0, ""]
+  - ["时间间隔为负数","1m",10,"btc_usdt",1636963750,1636962750, failure, 1, "invalid param"]
+  - ["时间间隔内不存在K线数据","1m",10,"btc_usdt",1952495550,1952495650, success, 0, ""]
+  
+get_mark_price:
+  # 获取交易对的标记价格
+  # 用例场景,交易对,条数,预期结果,预期返回代码,预期返回错误信息
+  # scene,symbol,size,except_result,except_code,except_msg
+  - ["获取标记价格正常,条数为空","btc_usdt",10, success, 0, "p"]
+  - ["获取标记价格正常,条数不为空","btc_usdt",10, success, 0, "p"]
+  - ["交易对为空","","", failure, 1, "invalid symbol"]
+  - ["交易对不存在","abtc_usdt","", failure, 1, "invalid symbol"]
+  - ["交易对开头有空格"," btc_usdt","", failure, 1, "invalid symbol"]
+  - ["交易对结尾有空格","btc_usdt ","", failure, 1, "invalid symbol"]
+  - ["条数为0","btc_usdt",0, success, 0, ""]
+  - ["条数类型为字符串","btc_usdt","123f", failure, 1, "invalid param"]
+  - ["条数为浮点数","btc_usdt",12.34, failure, 1, "invalid param"]
+  - ["条数为负整数","btc_usdt",-10, failure, 1, "invalid param"]
+
+get_ticker_info:
+  # 获取指定交易对的行情信息
+  # 用例场景,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,symbol,except_result,except_code,except_msg
+  - ["获取行情信息正常","btc_usdt", success, 0, "s"]
+  - ["交易对为空","", failure, 1, ""]
+  - ["交易对不存在","abtc_usdt", failure, 1, ""]
+  - ["交易对开头有空格"," btc_usdt", failure, 1, ""]
+  - ["交易对结尾有空格","btc_usdt ", failure, 1, ""]
+  
+get_tickers_info:
+  # 获取全交易对的行情信息
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - ["获取全交易对的行情信息", success, 0, "s"]
+
+qoute_agg_ticker:
+  # 获取单个交易对的ticker信息
+  # scene,symbol,except_result,except_code,except_msg
+  - [ "main-正确的交易对",'dao_usdt', success, 0, "" ]
+  - [ "交易对不存在",'dao1_usdt', failure, 1, "invalid symbol" ]
+  - [ "交易对为空",'', success, 0, "" ]  # 交易对为null 返回""
+
+qoute_agg_tickers:
+  # 获取全交易对的ticker信息
+  # scene,except_result,except_code,except_msg
+  - [ "main-获取全交易对的ticker信息", success, 0, "success" ]

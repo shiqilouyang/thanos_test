@@ -1,0 +1,104 @@
+adjust_leverage:
+  # 调整杠杆倍数
+  # 用例场景,杠杆倍数,仓位方向,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,leverage,positionSide,symbol,except_result,except_code,except_msg
+  - ["main-调整杠杆倍数,仓位方向为LONG", 3, "LONG", "dao_usdt", success, 0, ""]
+  - ["main-调整杠杆倍数,仓位方向为SHORT", 3, "SHORT", "dao_usdt", success, 0, ""]
+  - ["杠杆倍数为空", "", "LONG", "dao_usdt", failure, 1, "invalid leverage"]
+  - ["杠杆倍数为0", 0, "LONG", "dao_usdt", failure, 1, "invalid leverage"]
+  - ["杠杆倍数为负整数", -2, "LONG", "dao_usdt",failure, 1, "invalid leverage"]
+  - ["杠杆倍数为浮点数", 2.23, "LONG", "dao_usdt", failure, 1, "invalid leverage"]
+  - ["杠杆倍数为字符串", "2.a", "LONG", "dao_usdt", failure, 1, "invalid leverage"]
+  - ["仓位方向为空", 2, "", "dao_usdt", failure, 1, "invalid_positionSide"]
+  - ["仓位方向不存在", 2, "xxx", "dao_usdt", failure, 1, "invalid position side"]
+  - ["仓位方向小写显示", 2, "long", "dao_usdt", failure, 1, ""]
+  - ["交易对为空",2, "LONG", "",failure, 1, "invalid symbol"]
+  - ["交易对不存在",2, "LONG", "guo_usdt",failure, 1, "invalid symbo"]
+  - ["交易对大写显示",2, "LONG", "DAO_USDT",success, 0, ""]
+#  - ["交易对开头有空格",2, "LONG", " dao_usdt",failure, 1, ""]
+#  - ["交易对结尾有空格",2, "LONG", "dao_usdt ",failure, 1, ""]
+  - ["杠杆倍数等于设定值上限", 200, "SHORT", "dao_usdt", success, 0, "" ]
+  - ["杠杆倍数大于设定值上限", 21, "LONG", "dao_usdt", failure, 1, "platform reject" ]
+  - ["main-存在活跃订单不能更改杠杆倍数", 21, "LONG", "dao_usdt", failure, 1, "order exists" ]
+
+get_adl:
+  # 获取ADL信息
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - ["main-正常查询", success, 0, ""]
+
+adjust_auto_margin:
+  # 修改自动追加保证金
+  # 用例场景,是否开启自动追加保证金,仓位方向,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,autoMargin,positionSide,symbol,except_result,except_code,except_msg
+  - ["main-自动追加保证金正常，仓位方向LONG",true,"LONG","dao_usdt" ,success, 0, ""]    #修改自动追加保证金有一定延迟
+  - ["main-自动追加保证金正常，仓位方向SHORT",true,"SHORT","dao_usdt" ,success, 0, ""]
+  - ["main-关闭自动追加保证金正常，仓位方向LONG",false,"LONG","dao_usdt" ,success, 0, ""]
+  - ["main-关闭自动追加保证金正常，仓位方向SHORT",false,"SHORT","dao_usdt",success, 0, ""]
+  - ["开启自动追加保证金为空","","LONG","dao_usdt" ,failure, 1, "invalid_autoMargin"]
+  - ["开启自动追加保证金不存在","xxx","LONG","dao_usdt",failure, 1, "invalid_autoMargin"]
+  - ["仓位方向为空",true,"","dao_usdt" ,failure, 1, "invalid_positionSide"]
+  - ["仓位方向不存在",true,"xxx","dao_usdt" ,failure, 1, "invalid params"]
+  - ["仓位方向小写显示",true,"long","dao_usdt" ,failure, 1, "invalid params"]
+  - ["交易对为空",true,"LONG","" ,failure, 1, "invalid symbol"]
+  - ["交易对不存在",true,"LONG","xxx_usdt" ,failure, 1, "invalid params"]
+  - ["交易对大写显示",true,"LONG", "DAO_USDT",success, 0, ""]
+#  - ["交易对开头有空格",true,"LONG","dao_usdt" ,failure, 1, ""]
+#  - ["交易对结尾有空格",true,"LONG","dao_usdt " ,failure, 1, ""]
+# 修改成功之后
+# 修改不成功的场景
+
+get_position:
+  # 获取持仓信息
+  # 用例场景,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,,symbol,except_result,except_code,except_msg
+  - ["main-正常查询", "dao_usdt",success, 0, ""]
+#  # 交易对为null, 获取所有的的持仓信息
+  - ["交易对为空", "",success, 0, ""]
+  - ["交易对不存在","guo_usdt",failure, 1, "invalid symbol"]  # 状态码 500 ,需要更改
+  - ["交易对大写显示", "dao_usdt",success, 0, ""]
+
+#  - ["交易对开头有空格", " dao_usdt",failure, 1, ""]
+#  - ["交易对结尾有空格", "dao_usdt ",failure, 1, ""]  #
+
+adjust_margin:
+  # 修改保证金
+  # 用例场景,数量,持仓方向,交易对,调整方向,预期结果,预期返回代码,预期返回错误信息
+  # scene,margin,positionSide,symbol,type,except_result,except_code,except_msg
+  - ["main-增加逐仓保证金，持仓方向LONG",20,"LONG","dao_usdt","ADD", success, 0, ""]
+  - ["main-增加逐仓保证金，持仓方向LONG",20,"LONG","dao_usdt","ADD", success, 0, "" ] # 持续增加
+  - ["main-增加逐仓保证金，持仓方向SHORT",20,"SHORT","dao_usdt","ADD", success, 0, ""]
+  - ["main-增加逐仓保证金，持仓方向SHORT",20,"SHORT","dao_usdt","ADD", success, 0, ""] # 持续减少
+  - ["main-减少逐仓保证金，持仓方向LONG",20,"LONG","dao_usdt","SUB",success, 0, ""]
+  - ["main-减少逐仓保证金，持仓方向SHORT",20,"SHORT","dao_usdt","SUB",success, 0, ""]
+  - ["数量为空","","LONG","dao_usdt","SUB", failure, 1, "invalid_margin"]
+  - ["数量非float类型","20.a","LONG","dao_usdt","SUB", failure, 1, "invalid_margin"]
+
+#  - ["数量精度等于设定精度",0.00001,"LONG","dao_usdt","SUB", success, 0, ""]
+#  - ["数量精度大于设定精度，数值为设定精度+1",0.000001,"LONG","dao_usdt","SUB", failure, 1, "invalid_margin"]
+#  - ["数量精度小于设定精度，数值为设定精度-1",0.1,"LONG","dao_usdt","SUB", success, 0, ""]
+
+#  - ["增加数量大于账户余额，数值为账户余额+数量最小变动单位",20000000000000,"LONG","dao_usdt","ADD", failure, 1, "insufficient_user_balance"]
+#  - ["减少后保证金小于初始保证金",2000000,"LONG","dao_usdt","SUB", failure, 1, "insufficient_amount_of_reduced_margin"]
+  - ["持仓方向为空",20,"","dao_usdt","SUB", failure, 1, "invalid_positionSide"]
+  - ["持仓方向不存在",20,"xxx","dao_usdt","SUB", failure, 1, "invalid params"]
+  - ["持仓方向小写显示",20,"long","dao_usdt","SUB", failure, 1, "invalid params"]
+  - ["交易对为空",20,"LONG","","SUB", failure, 1, "invalid symbol"]
+  - ["交易对不存在",20,"LONG","xxx_usdt","SUB", failure, 1, "invalid params"]
+#  - ["交易对开头有空格",20,"LONG"," dao_usdt","SUB",failure, 1, "" ]
+#  - ["交易对结尾有空格",20,"LONG","dao_usdt ","SUB",failure, 1, "" ]
+  - ["调整方向为空",20,"LONG"," dao_usdt","", failure, 1, "invalid type"]
+  - ["调整方向不存在",20,"LONG"," dao_usdt","xxx", failure, 1, "invalid params"]
+#  - ["调整方向小写显示",20,"LONG"," dao_usdt","sub", failure, 1, "invalid_params"]
+#  - [ "增加数量等于账户余额",20.123,"LONG","dao_usdt","ADD", success, 0, "" ]
+#  - ["减少后保证金等于初始保证金",20.1231,"LONG","dao_usdt","SUB", success, 0, ""]
+
+
+position_close_all:
+  # 获取持仓信息
+  # 用例场景,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,,symbol,except_result,except_code,except_msg
+  - ["main-该交易对有仓位", "dao_usdt",success, 0, "" ]
+  - ['该交易对无仓位', "fil_usdt",success, 0, "" ]
+  - ['交易对不存在', "dao1_usdt",failure, 1, "invalid symbol" ]
+  - ["交易对大写显示", "dao_usdt",success, 0, ""]

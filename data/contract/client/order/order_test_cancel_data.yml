@@ -1,0 +1,156 @@
+#撤销订单是测试数据
+# 单个测试订单的用例
+  #正向
+cancel_success:
+    # 撤销新建订单,先下一个订单后再cancel该订单
+  cancel_new_order:
+    name: main-撤销新建订单
+    order_parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTC
+      orderSide: BUY
+      positionSide: LONG
+    expected_result:
+      state: 4
+      msgInfo: success
+  # 撤销带止盈止损的订单
+  cancel_profit_order:
+    name: main-撤销带止盈止损的订单
+    order_parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTC
+      orderSide: BUY
+      positionSide: LONG
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      state: 4
+      msgInfo: success
+  # 撤销部分带止盈止损成交订单
+  cancel_part_profit_order:
+    name: main-撤销部分成交的订单
+    order_parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTC
+      orderSide: BUY
+      positionSide: LONG
+      triggerProfitPrice:
+      triggerStopPrice:
+    taker_order_parameter:
+      symbol: dao_usdt
+      origQty: 3
+      orderType: MARKET
+      timeInForce: IOC
+      orderSide: SELL
+      positionSide: SHORT
+    expected_result:
+      state: 4
+      msgInfo: success
+  # 反向
+cancel_failed:
+   # 撤销全部成交订单
+  cancel_traded:
+    name: 撤销全部成交订单
+    parameter:
+      state: 3
+    expected_result:
+      msgInfo: failure
+      msg: invalid_order
+   # 撤销用户撤销的订单
+  cancel_canceled:
+    name: 撤销用户撤销的订单
+    parameter:
+      state: 4
+    expected_result:
+      msgInfo: failure
+      msg: invalid_order
+  # 撤销过期的订单
+  cancel_expired:
+    name: 撤销过期的订单
+    parameter:
+      state: 6
+    expected_result:
+      msgInfo: failure
+      msg: invalid_order
+  # 订单号为非数字
+  order_id_not_num:
+    name: 订单号为非数字
+    parameter:
+      order_id: adsf
+    expected_result:
+      msgInfo: failure
+      msg: invalid param
+  # 订单为小数
+  order_id_decimals:
+    name: 订单为小数
+    parameter:
+      order_id: 1.5
+    expected_result:
+      msgInfo: failure
+      msg: invalid param
+  # 订单为0
+  order_is_0:
+    name: 订单为0
+    parameter:
+      order_id: 0
+    expected_result:
+      msgInfo: failure
+      msg: invalid_order
+  # 订单为负数
+  order_is_minus:
+    name: 订单为负数
+    parameter:
+      order_id: -3
+    expected_result:
+      msgInfo: failure
+      msg: invalid_order
+# 撤销所有订单的用例
+test_create_batch_success:
+# 正向
+  # 撤销单个交易对的订单
+  cancel_symbol_order:
+    name: 撤销单个交易对的订单
+    order_parameter:
+      list: [{orderSide: BUY, orderType: LIMIT, origQty: 40, positionSide: LONG, symbol: dao_usdt, timeInForce: GTC,price: dao_price},{orderSide: BUY, orderType: MARKET, origQty: 40, positionSide: LONG, symbol: xrp_usdt,timeInForce: GTC,price: xrp_price}]
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+  # 撤销所有交易对的订单
+  cancel_all_order:
+    name: 撤销所有交易对的订单
+    order_parameter:
+      list: [{orderSide: BUY, orderType: LIMIT, origQty: 40, positionSide: LONG, symbol: dao_usdt, timeInForce: GTC,price: dao_price},{orderSide: BUY, orderType: MARKET, origQty: 40, positionSide: LONG, symbol: xrp_usdt,timeInForce: GTC,price: xrp_price}]
+    parameter:
+    expected_result:
+      # 当前用户id,用于去mongo的order表查询数据
+      account_id: 39
+      msgInfo: success
+
+# 反向
+test_create_batch_failed:
+   # 无效交易对
+  invalid_symbol:
+    name: 无效的交易对
+    parameter:
+      symbol: hw_sad
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+# 交易对非字符串
+  symbol_not_str:
+    name: 交易对非字符串
+    parameter:
+      symbol: 123
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol

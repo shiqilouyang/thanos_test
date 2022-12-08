@@ -1,0 +1,52 @@
+# 正向
+cancel_plan_success:
+  # 正确撤销计划委托
+  correct_entrustId:
+    name: main-正确撤销计划委托
+    create_parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: MARK_PRICE
+      price:
+      stopPrice:
+    expected_result:
+      msgInfo: success
+
+#反向
+cancel_plan_failed:
+  # 撤销已经触发的计划委托
+  cancel_triggered:
+    name: 撤销已经触发的计划委托
+    parameter:
+      state: 3
+    expected_result:
+      msgInfo: failure
+      msg: entrust_cancel_reject
+# 撤销用户撤销的计划委托
+  cancel_user_revocation:
+    name: 撤销已经触发的计划委托
+    parameter:
+      state: 4
+    expected_result:
+      msgInfo: failure
+      msg: entrust_cancel_reject
+# 不存在的计划委托
+  cancel_noexistent_entrust:
+    name: 不存在的计划委托
+    parameter:
+      entrustId: 123456
+    expected_result:
+      msgInfo: failure
+      msg: invalid_entrust
+# 计划委托id非数字
+  entrust_not_num:
+    name: 计划委托id非数字
+    parameter:
+      entrustId: asdfghj
+    expected_result:
+      msgInfo: failure
+      msg: invalid param

@@ -1,0 +1,11 @@
+get_account_info:
+  # 获取账户相关信息
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - ["main-获取用户账户信息", success, 0, ""]
+
+open_thanos:
+  # 开通合约
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - ["main-开通合约", success, 0, ""]   #暂时测试老用户

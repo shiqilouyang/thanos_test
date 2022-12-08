@@ -1,0 +1,31 @@
+
+# 获取资金费率的用例数据
+# 正确获取资金费率
+test_success:
+  correct_symbol:
+  # 正确输入档位和交易对
+    name: main-正确输入交易对参数
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msg: success
+
+# 获取资金费率的反向用例
+test_unsuccess:
+  #交易对为空
+  symbol_is_none:
+    name: main-交易对为空
+    parameter:
+      symbol:
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+  #无效的交易对
+  symbol_is_invalid:
+    name: 无效的交易对
+    parameter:
+      symbol: hw_btc
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+

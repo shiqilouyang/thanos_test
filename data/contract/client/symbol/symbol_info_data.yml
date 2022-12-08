@@ -1,0 +1,22 @@
+symbol_info:
+  # 获取单个交易对的配置信息
+  # 用例场景,交易对,预期结果,预期返回代码,预期返回错误信息
+  # scene,symbol,except_result,except_code,except_msg
+  - ["交易对为空", "", success, 0, ""]
+  - ["main-交易对存在", "dao_usdt", success, 0, ""]
+  - ["交易对不存在", "xxx_usdt", success, 0, ""]
+  - ["交易对开头有空格", " dao_usdt", success, 0, ""]
+  - ["交易对结尾有空格", "dao_usdt ", success, 0, ""]
+
+test_get_symbol_coins:
+  # 获取交易对币种
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - [ "main-正常查询",  success, 0, "" ]
+
+
+symbol_list_info:
+  # 获取所有交易对的配置信息
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - [ "main-正常查询", success, 0, "" ]

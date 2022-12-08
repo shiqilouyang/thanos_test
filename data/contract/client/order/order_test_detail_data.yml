@@ -1,0 +1,20 @@
+# 根据id查询订单测试用例数据
+# id正确查询
+detail_success:
+  correct:
+    # 订单id正确查询
+    name: main-订单id正确查询
+    account_id: 39
+    parameter:
+    expected_result:
+      msgInfo: success
+# 反向： 不存在的id、非数字
+detail_failed:
+  order_id_not_num:
+    # order_id非数字
+    name: order_id非数字
+    parameter:
+      orderId: asd
+    expected_result:
+      msgInfo: failure
+      msg: invalid param

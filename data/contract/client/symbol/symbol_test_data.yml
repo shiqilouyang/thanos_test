@@ -1,0 +1,8 @@
+# 获取交易对的配置信息模块的用例数据
+coins:
+  expect_msg: success
+  expect_result_in:
+    - btc
+    - eth
+
+

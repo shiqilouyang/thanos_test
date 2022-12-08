@@ -1,0 +1,103 @@
+# 正向的用例
+# 数据从redis或mongo查询比对未校验
+test_success:
+  # 正确输入时间间隔和交易对
+  interval_symbol:
+    name: main-正确输入时间间隔和交易对
+    parameter:
+      interval:  1w
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+  # 正确输入时间间隔、交易对、结束时间、限制条数、起始时间
+  all_parm:
+    name: main-所有参数正确输入
+    parameter:
+      interval: 1d
+      symbol: dao_usdt
+      endTime: now
+      limit: 20
+      startTime: 1641885847000
+    expected_result:
+      msgInfo: success
+# 反向的测试用例
+test_unsuccess:
+  # 无效的交易对
+  invail_symbol:
+    name: 无效的交易对
+    parameter:
+      interval: 1d
+      symbol: dao_bb
+      limit: 20
+    expected_result:
+      msg: invalid symbol
+  # 交易对为空
+  symbol_is_none:
+    name: 交易对为空
+    parameter:
+      interval: 1d
+      limit: 20
+    expected_result:
+      msg: invalid symbol
+  # 时间间隔为空
+  interval_is_none:
+    name: 时间间隔为空
+    parameter:
+      symbol: dao_usdt
+      limit: 20
+    expected_result:
+       msg: invalid_interval
+   #无效的时间间隔
+  invail_interval:
+    name: 无效的时间间隔
+    parameter:
+      interval: 1
+      symbol: dao_usdt
+      limit: 20
+    expected_result:
+      msg: invalid_interval
+# 开始时间非数字
+  startTime_is_not_num:
+    name: 开始时间非数字
+    parameter:
+      interval: 1d
+      symbol: dao_usdt
+      startTime: asd
+    expected_result:
+      msg: invalid param
+# 结束时间非数字
+  endTime_is_not_num:
+    name: 结束时间非数字
+    parameter:
+      interval: 1d
+      symbol: dao_usdt
+      endTime: adkjf
+    expected_result:
+      msg: invalid param
+# 限制条数数非数字
+  limit_is_not_num:
+    name: 限制条数数非数字
+    parameter:
+      interval: 1d
+      symbol: dao_usdt
+      limit: adkjf
+    expected_result:
+     msg: invalid param
+# 限制条数为0
+  limit_is_0:
+    name: 结束时间非数字
+    parameter:
+      interval: 1d
+      symbol: dao_usdt
+      limit: 0
+    expected_result:
+     msg: invalid_limit
+# 限制条数为负数
+  limit_is_minus:
+    name: 结束时间非数字
+    parameter:
+      interval: 1d
+      symbol: dao_usdt
+      limit: -4
+    expected_result:
+     msg: invalid_limit

@@ -1,0 +1,128 @@
+# 查询历史订单测试用例数据，参数direction为PREV查比传入id大的订单，为NEXT时查询小于传入id的订单
+# 正向
+list_history_success:
+    # 正常往前查询
+    find_front:
+      query:
+        accountId:
+        state: 3
+      name: main-无参数查询订单
+      parameter:
+        direction: PREV
+        id:
+        limit: 2
+      expected_result:
+        mongo_query: $gt
+        msgInfo: success
+# 正常往后查询
+    find_back:
+      query:
+        accountId:
+        state: 3
+      name:  正常往后查询
+      parameter:
+        direction: NEXT
+        id:
+        limit: 3
+      expected_result:
+        mongo_query: $lt
+        msgInfo: success
+# 最新一条往前往前
+    last_front:
+      query:
+        sort: -1
+        limit: 1
+      name: 最新一条往前往前
+      parameter:
+        direction: PREV
+        id:
+        limit: 4
+      expected_result:
+        mongo_query: $gt
+        msgInfo: success
+# 第一条往后
+    first_back:
+      query:
+        sort: 1
+        limit: 1
+      name: 第一条往后
+      parameter:
+        direction: NEXT
+        id:
+        limit: 5
+      expected_result:
+        mongo_query: $lt
+        msgInfo: success
+
+# 反向
+list_history_failed:
+  # direction非字符串
+    direction_not_str:
+      name: direction非字符串
+      parameter:
+        direction: 233
+        id:
+        limit: 5
+      expected_result:
+        msgInfo: failure
+        msg: invalid_direction
+  # 无效的direction
+    invailed_direction:
+      name: 无效的direction
+      parameter:
+        direction: rtyuNEXT
+        id:
+        limit: 5
+      expected_result:
+        msgInfo: failure
+        msg: invalid_direction
+# id非数字
+    id_not_num:
+      name: id非数字
+      parameter:
+        direction: NEXT
+        id: adsf
+        limit: 5
+      expected_result:
+        msgInfo: failure
+        msg: invalid_id
+# 不存在的id
+    invailed_id:
+      name: 不存在的id
+      parameter:
+        direction: NEXT
+        id: 123456
+        limit: 5
+      expected_result:
+        msgInfo: success
+        items:
+# limit非数字
+    limit_not_num:
+      name: limit非数字
+      parameter:
+        direction: NEXT
+        id:
+        limit: adf
+      expected_result:
+        msgInfo: failure
+        msg: invalid_limit
+  # limit为0
+    limit_is_0:
+      name: limit为0
+      parameter:
+        direction: NEXT
+        id:
+        limit: 0
+      expected_result:
+        msgInfo: failure
+
+    # limit为负数
+    limit_is_minus:
+      name: limit为负数
+      parameter:
+        direction: NEXT
+        id:
+        limit: -1
+      expected_result:
+        msgInfo: failure
+        msg: invalid_limit

@@ -1,0 +1,228 @@
+# 查询订单的测试用例
+#正向测试用例
+list_success:
+    # 无参数
+    no_parameter:
+      name: main-无参数查询订单
+      parameter:
+      expected_result:
+        msgInfo: success
+# 全部参数
+    all_parameter:
+      name: main-无参数查询订单
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: 10
+        forceClose: true
+        startTime:
+        endTime:
+      expected_result:
+        msgInfo: success
+# 部分参数
+    # 新建、结束时间
+    new_endtime:
+      name: 新建、结束时间
+      parameter:
+        state: NEW
+        endTime:
+      expected_result:
+        msgInfo: success
+  # 部分成交、强平
+    state_forceClose:
+      name: 部分成交、强平
+      parameter:
+        state: PARTIALLY_FILLED
+        forceClose: true
+      expected_result:
+        msgInfo: success
+  # 全部成交、不强平
+    filled_not_forceClose:
+      name: 全部成交、不强平
+      parameter:
+        state: FILLED
+        forceClose: false
+      expected_result:
+        msgInfo: success
+  # 用户撤销、页码
+    state_page:
+      name: 部分成交、强平
+      parameter:
+        state: CANCELED
+        page: 2
+        size: 15
+      expected_result:
+        msgInfo: success
+  # 下单失败、单页数
+    state_size:
+      name: 部分成交、强平
+      parameter:
+        state: REJECTED
+        size: 10
+      expected_result:
+        msgInfo: success
+  # 过期、开始时间
+    state_starttime:
+      name: 过期、开始时间
+      parameter:
+        state: EXPIRED
+        startTime:
+      expected_result:
+        msgInfo: success
+  # 未完成、交易对组合查询
+    state_symbol:
+      name: 未完成、交易对组合查询
+      parameter:
+        state: UNFINISHED
+        symbol: dao_usdt
+      expected_result:
+        msgInfo: success
+  # 历史、单页数、页数
+    state_page_size:
+      name: 未完成、交易对组合查询
+      parameter:
+        state: HISTORY
+        symbol: dao_usdt
+      expected_result:
+        msgInfo: success
+
+# 反向测试用例
+list_failed:
+# 无效交易对
+    invailed_symbol:
+      name: 无效交易对
+      parameter:
+        symbol: dao_xt
+        state: NEW
+        page: 1
+        size: 10
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid symbol
+# 无效的状态
+#    invailed_state:
+#      name: 无效的状态
+#      parameter:
+#        symbol: dao_usdt
+#        state: YES
+#        page: 1
+#        size: 10
+#        forceClose: true
+#        startTime:
+#        endTime:
+#      expected_result:
+#        msgInfo: failure
+#        msg: invalid state
+ # 无效的开始时间
+    invailed_starTiem:
+      name: 无效的开始时间
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: 10
+        forceClose: true
+        startTime: asdfd
+      expected_result:
+        msgInfo: failure
+        msg: invalid_startTime
+# 无效的结束时间
+    invailed_endTiem:
+      name: 无效的结束时间
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: 10
+        forceClose: true
+        endTime: asdfd
+      expected_result:
+        msgInfo: failure
+        msg: invalid_endTime
+# 单页数非数字
+    page_not_num:
+      name: 单页数非数字
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: adsf
+        size: 10
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid_page
+# 单页数为0
+    page_is_0:
+      name: 单页数为0
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 0
+        size: 10
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid_page
+# 单页数为负数
+    page_is_minus:
+      name: 单页数为负数
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: -6
+        size: 10
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid_page
+# 页码非数字
+    size_not_num:
+      name: 页码非数字
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: asdffdg
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid_size
+# 页码为0
+    size_is_0:
+      name: 页码为0
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: 0
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid_size
+# 页码为负数
+    size_is_minus:
+      name: 页码为负数
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: -8
+        forceClose: true
+      expected_result:
+        msgInfo: failure
+        msg: invalid_size
+# 无效的强平状态
+    invailed_forceClose:
+      name: 无效的强平状态
+      parameter:
+        symbol: dao_usdt
+        state: NEW
+        page: 1
+        size: 8
+        forceClose: 5678hj
+      expected_result:
+        msgInfo: failure
+        msg: invalid_forceClose
+

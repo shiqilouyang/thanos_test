@@ -1,0 +1,24 @@
+# 指定交易对的行情信息测试用例
+ticker:
+  # 正确查询交易对的行情信息
+  test_success:
+    name: main-正确查询交易对的行情信息
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+  # 无效的交易对
+  test_unsuccess:
+    name: 无效的交易对
+    parameter:
+      symbol: dao_u
+    expected_result:
+      msg: 无效的交易对
+
+
+# 获取全交易对的行情信息
+tickers:
+  tickers_success:
+    name: 获取全交易对接口信息
+    expected_result:
+      msgInfo: success

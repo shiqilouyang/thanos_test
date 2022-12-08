@@ -1,0 +1,34 @@
+# 根据止盈止损id查询查询止盈止损详情
+# 正向
+profit_detail_success:
+  # id正确查询
+  correct_id:
+    name: main-id正确查询
+    expected_result:
+      msgInfo: success
+# 反向
+profit_detail_failed:
+  # id为空
+  profitId_is_none:
+    name: id为空
+    parameter:
+      profitId:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_profitId
+# 不存在的id
+  invalid_profitId:
+    name: 不存在的id
+    parameter:
+      profitId: 1234567
+    expected_result:
+      msgInfo: failure
+      msg: invalid_profit_id
+# id非数字
+  profitId_not_num:
+    name: id非数字
+    parameter:
+      profitId: adfsdgadsf
+    expected_result:
+      msgInfo: failure
+      msg: invalid param

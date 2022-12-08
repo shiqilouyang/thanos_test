@@ -1,0 +1,23 @@
+test_collection_add:
+  # 收藏交易对
+  # 场景,交易对
+  # scene,symbol,except_result,except_code,except_msg
+  - ["main-收藏存在的交易对","btc_usdt",success, 0, ""]
+  - ["收藏不存在的交易对","shib_usdt1",failure, 1, "invalid symbol"]
+  - ["交易对为null","",failure, 1, "invalid symbol"]
+
+test_collection_cancel:
+  # 取消收藏交易对
+  # 场景,交易对
+  # scene,symbol,except_result,except_code,except_msg
+  - ["main-取消收藏过的交易对","fil_usdt",success, 0, ""]
+  - ["取消没有收藏过的交易对","shib_usdt",failure, 1, "" ]
+  - ["取消不存在的交易对","shib_usdt1",failure, 1, "invalid symbol"]
+  - ["交易对为null","",failure, 1, "invalid symbol"]
+
+
+test_collection_list:
+  # 交易对收藏列表
+  # 场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - ["main-收藏存在的交易对",success, 0, ""]

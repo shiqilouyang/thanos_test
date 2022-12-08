@@ -1,0 +1,268 @@
+# 创建止盈止损测试用例
+# 正向
+# 正向的多笔止盈止损，反向的多笔止盈止损用例（补）
+plan_create_profit_success:
+  # 1、多仓创建止盈
+  long_trigger_profit:
+    name: main-多仓创建止盈
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      positionSide: LONG
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: success
+  # 2、空仓创建止盈止损
+  short_trigger_profit_stop:
+    name: 空仓创建止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      positionSide: SHORT
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: success
+  # 3、空仓创建止损
+  short__stop:
+    name: 空仓创建止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      positionSide: SHORT
+      triggerStopPrice:
+    expected_result:
+      msgInfo: success
+# 反向
+# 已有止盈止损创建计划委托
+had_profit_create_profit:
+# 1、多仓已有止盈创建止盈止损委托
+  had_long_profit:
+    name: 多仓已有止盈创建止盈止损委托
+    parameter:
+      symbol: dao_usdt
+      origQty:
+      positionSide: LONG
+      triggerStopPrice:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+      msg: more_than_available
+# 2、空仓已有止损创建止盈委托
+  had_short_profit:
+    name: 空仓已有止损创建止盈委托
+    parameter:
+      symbol: dao_usdt
+      origQty:
+      positionSide: SHORT
+      triggerStopPrice:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+      msg: more_than_available
+#没有仓位创建止盈止损
+create_profit_without_position:
+  # 1、没有空仓创建空仓止盈止损
+  create_short_without_position:
+    name: 没有空仓创建空仓止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      positionSide: SHORT
+      triggerStopPrice:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+      msg: trigger_profit_price_more_than_entry_price
+# 没有多仓创建多仓止盈止损
+  create_long_without_position:
+    name: 没有多仓创建多仓止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      positionSide: LONG
+      triggerStopPrice:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+      msg: trigger_profit_price_more_than_entry_price
+
+# 无效参数创建止盈止损
+invalid_parameter_create_profit:
+# 1、不带止盈触发价和止盈触发价创建止盈止损 bug未修复
+#  create_profit_without_anypirce:
+#    name: 不带止盈触发价和止盈触发价创建止盈止损
+#    parameter:
+#      symbol: dao_usdt
+#      origQty: 10
+#      positionSide: LONG
+#    expected_result:
+#      msgInfo: failure
+#      msg: Interval Service Error
+# 2、不填数量创建止盈止损
+  create_profit_without_origQty:
+    name: 不填数量创建止盈止损
+    parameter:
+      symbol: dao_usdt
+      positionSide: LONG
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 3、数量非数字
+  origQty_not_num:
+    name: 数量非数字
+    parameter:
+      symbol: dao_usdt
+      positionSide: LONG
+      origQty: adsfa
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 4、数量为0
+  origQty_is_0:
+    name: 数量为0
+    parameter:
+      symbol: dao_usdt
+      positionSide: LONG
+      origQty: 0
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 5、数量为负数
+  origQty_is_minus:
+    name: 数量为负数
+    parameter:
+      symbol: dao_usdt
+      positionSide: LONG
+      origQty: -9
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 6、不填持仓方向创建止盈止损
+  create_profit_without_position_side:
+    name: 不填持仓方向创建止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_positionSide
+# 7、无效的持仓方向创建止盈止损
+  invalid_position_side:
+    name: 无效的持仓方向创建止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: ghjkladf
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 8、交易对为空创建止盈止损
+  create_profit_without_symbol:
+    name: 交易对为空创建止盈止损
+    parameter:
+      origQty: 9
+      positionSide: LONG
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+# 9、无效的交易对创建止盈止损
+  invalid_symbol:
+    name: 无效的交易对创建止盈止损
+    parameter:
+      symbol: xt_adf
+      origQty: 9
+      positionSide: LONG
+      triggerStopPrice: by_position
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+# 10、止盈价格非数字
+  triggerProfitPrice_not_num:
+    name: 止盈价格非数字
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: LONG
+      triggerStopPrice: by_position
+      triggerProfitPrice: adfa
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerProfitPrice
+# 11、止盈价格为0
+  triggerProfitPrice_is_0:
+    name: 止盈价格为0
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: SHORT
+      triggerStopPrice: by_position
+      triggerProfitPrice: 0
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerProfitPrice
+# 12、止盈价格为负数
+  triggerProfitPrice_is_minus:
+    name: 止盈价格为负数
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: SHORT
+      triggerStopPrice: by_position
+      triggerProfitPrice: -6
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerProfitPrice
+# 13、止损价格非数字
+  triggerStopPrice_not_num:
+    name: 止损价格非数字
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: SHORT
+      triggerStopPrice: adfadf
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerStopPrice
+# 14、止损价格为0
+  triggerStopPrice_is_0:
+    name: 止损价格为0
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: SHORT
+      triggerStopPrice: 0
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerStopPrice
+# 15、止损价格为负数
+  triggerStopPrice_is_minus:
+    name: 止损价格为负数
+    parameter:
+      symbol: dao_usdt
+      origQty: 9
+      positionSide: SHORT
+      triggerStopPrice: -8
+      triggerProfitPrice: by_position
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerStopPrice
+
+

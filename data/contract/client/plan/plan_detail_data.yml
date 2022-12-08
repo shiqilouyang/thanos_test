@@ -1,0 +1,35 @@
+# 正向
+plan_detail_success:
+  # 1、正确传入计划委托id查询计划委托
+  correct_entrust:
+    name: main-正确传入计划委托id查询计划委托
+    parameter:
+    expected_result:
+      msgInfo: success
+# 正确传入计划委托id查询计划委托
+# 反向
+plan_detail_failed:
+  # 1、不传入计划id查询计划委托
+  no_entrust_id:
+    name: 不传入计划id查询计划委托
+    parameter:
+      entrust_id:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_entrustId
+  # 2、无效的计划委托id查询 bug未修复
+  invailed_entrust_id:
+    name: 无效的计划委托id查询
+    parameter:
+      entrustId: 345678
+    expected_result:
+      msgInfo: failure
+      msg: invalid_entrustId
+  # 3、计划委托id非数字
+  entrust_id_not_string:
+    name: 计划委托id非数字
+    parameter:
+      entrustId: adfdaf
+    expected_result:
+      msgInfo: failure
+      msg: invalid_entrustId

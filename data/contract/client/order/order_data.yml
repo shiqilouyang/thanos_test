@@ -1,0 +1,8 @@
+order_list_by_ids:
+  # 根据id列表查询订单（订单id用,分隔）
+  # scene,ids,except_result,except_code,except_msg
+  - ["main-单个id正常查询",'10029012',success, 0, ""]
+  - ["单个id不存在", '10029012',success, 0, ""]
+  - ["多个id正常查询", '10029012,1210812',success, 0, ""]
+  - ["多个id都不存在查询",'10029012,1210812', success, 0, ""]
+  - ["多个id单个不存在查询",'10029012,1210812', success, 0, ""]

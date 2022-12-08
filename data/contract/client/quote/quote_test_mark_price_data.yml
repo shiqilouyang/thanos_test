@@ -1,0 +1,44 @@
+# 获取交易对的标记价格测试数据
+# 正向用例
+test_success:
+  # 正确输入交易对和条数
+  symbol_size:
+    name: main-输入交易对
+    parameter:
+      symbol: dao_usdt
+    expected_result:
+      msgInfo: success
+
+# 反向用例
+test_unsucces:
+  # 无效的交易对
+  invail_symbol:
+    name: 无效的交易对
+    parameter:
+      symbol: daosd
+    expected_result:
+      msg: invalid symbol
+# 条数非数字
+  size_is_not_num:
+    name: 条数非数字
+    parameter:
+      size: asd
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid param
+# 条数为0
+  size_is_0:
+    name: 条数为0
+    parameter:
+      size: 0
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_size
+# 条数为负数
+  size_is_minus:
+    name: 条数为负数
+    parameter:
+      size: -1
+      symbol: dao_usdt
+    expected_result:
+      msg: invalid_size

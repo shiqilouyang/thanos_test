@@ -1,0 +1,74 @@
+transfer:
+  # 资金划转
+  # 用例场景,数量,方向,币种,预期结果,预期返回代码,预期返回错误信息
+  # scene,amount,billSide,coin,except_result,except_code,except_msg
+  - ["main-划转正常，方向转入", 100, "ADD", "usdt", success, 0, ""]
+  - ["main-持续划转，方向转入", 100, "ADD", "usdt", success, 0, ""]
+  - ["main-划转正常，方向转出", 100, "SUB", "usdt", success, 0, ""]
+  - ["main-划转正常，方向转出", 100, "SUB", "usdt", success, 0, ""] # 持续划转,转出
+  - ["数量为空", "", "ADD", "usdt", failure, 1, "invalid_amount"]
+  - ["方向为空",  1, "", "usdt", failure, 1, "invalid_billSide"]
+  - ["币种为空",  1, "ADD", "", failure, 1, "invalid coin"]
+  - ["币种不存在",  1, "ADD", "小A", failure, 1, "invalid_coin"]
+  - ["方向不存在",  1, "大Q", "usdt ", failure, 1, "invalid_bill_side_type"]
+  - ["数量为0", 0, "ADD", "usdt", failure, 1, "invalid_amount"]
+  - ["数量为负数", -1.23, "ADD", "usdt", failure, 1, "invalid_amount"]
+  - ["数量为字符串","1.2321f", "ADD", "usdt", failure, 1, "invalid_amount"]
+
+
+#  - ["币种禁止转入",  1, "ADD", "fil", failure, 1, ""]
+#  - ["币种禁止转出",  1, "ADD", "usdt", failure, 1, ""]
+#  - ["币种开头有空格",  1, "ADD", " usdt", failure, 1, ""]
+#  - ["币种结尾有空格",  1, "ADD", "usdt ", failure, 1, ""]
+#  - ["数量精度等于币种数量精度", "1.001", "ADD", "usdt", success, 0, ""]  #划转数量小数位不应该大于数量精度位数
+#  - ["数量精度大于币种数量精度，数值为设置的币种价格精度+1", "1.0001", "ADD", "usdt", success, 0, ""]
+#  - ["数量精度小于币种数量精度，数值为设置的币种价格精度-1", "", "1.01", "usdt", success, 0, ""]
+#  - ["转入数量等于账户可划转余额", 10, "ADD", "usdt", success, 0, ""]   # 暂时没有限额
+#  - ["转入数量大于账户可划转余额，数值为可划转余额+数量最小变动单位", 10.001, "ADD", "usdt", success, 0, ""]
+#  - ["转入数量小于账户可划转余额，数值为可划转余额-数量最小变动单位", 9.999, "ADD", "usdt", success, 0, ""]
+#  - ["转入数量等于逐仓账户可划转余额", 10, "SUB", "usdt", success, 0, ""]
+#  - ["转入数量大于逐仓账户可划转余额，数值为可划转余额+数量最小变动单位", 10.001, "SUB", "usdt", success, 0, ""]
+#  - ["转入数量小于逐仓账户可划转余额，数值为可划转余额-数量最小变动单位", 9.999, "SUB", "usdt", success, 0, ""]
+#  - ["连续转入，转入数量总额大于可划转余额", 20, "ADD", "usdt", success, 0, ""]
+#  - ["连续转出，转入数量总额大于逐仓账户可划转余额", 20, "SUB", "usdt", success, 0, ""]
+  
+get_balance_coin:
+  # 获取用户单币种资金
+  # 用例场景,币种,预期结果,预期返回代码,预期返回错误信息
+  # scene,coin,except_result,except_code,except_msg
+  - ["main-获取用户币种资金正常","usdt", success, 0, ""]
+  - ["用户币种数量为0","xrp", success, 0, ""]
+  - ["币种为空","", failure, 1, "invalid coin"]
+  - ["币种不存在","小A", success, 0, ""]
+#  - ["币种为空开头有空格"," usdt", failure, 1, "invalid coin"]  # 讨论处理
+  - ["币种为空结尾有空格","usdt ", success, 0, ""]
+  
+get_balance_list:
+  # 获取用户所有资金
+  # 用例场景,预期结果,预期返回代码,预期返回错误信息
+  # scene,except_result,except_code,except_msg
+  - ["获取用户所有资金正常", success, 0, ""]
+
+
+get_balance_bills:
+  # 获取用户账务流水    方向、订单Id 必填项
+# 用例场景,币种,方向(NEXT和PREV),结束时间,订单Id,限制,起始时间,交易对,类型
+#  scene,coin,direction,endTime,id,limit,startTime,symbol,type,except_result,except_code,except_msg
+  - ["main-正确的币种", "usdt", "NEXT", "","61e7b401a2fb31166283e085", 10, "","", "", "success",0,""]
+  - [ "正确的币种大写", "USDT", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "", "success",0,"" ]
+  - ["不存在的币种", "btc1", "", "","", "", "","", "", "failure",1,"invalid coin"]
+  - ["正确存在的交易对", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","fil_usdt", "", "success",0,""]
+  - ["正确存在的大写交易对", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","fil_usdt", "", "success",0,"" ]
+  - ["不存在的交易对", "","NEXT", "","61e7b401a2fb31166283e085", "", "","fil1_usdt", "", "failure",1,"invalid symbol"]
+  - ["正确的类型 TAKE_OVER", "", "PREV", "","61e7b401a2fb31166283e085", "", "","", "TAKE_OVER", "success",0,""]
+  - ["正确的类型 EXCHANGE", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "EXCHANGE", "success",0,""]
+  - ["正确的类型 CLOSE_POSITION", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "CLOSE_POSITION", "success",0,""]
+#  - ["正确的类型 FUN", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "FUN", "success",0,""]
+  - ["正确的类型 ADL", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "ADL", "success",0,""]
+  - ["正确的类型 FEE", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "FEE", "success",0,""]
+  - ["正确的类型 QIANG_PING_MANAGER", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "QIANG_PING_MANAGER", "success",0,"" ]
+  - ["不存在的类型", "", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "TAKE_OVER1", "failure",1,"invalid type" ]
+  - ["startTime大于endTime", "usdt", "PREV", 1642576254000,"61e7b401a2fb31166283e085", "", 1642576254000,"", "", "success",0,""]
+  - ["限制位数", "usdt", "NEXT", "","61e7b401a2fb31166283e085", "", "","", "", "success",0,""]
+  - ["startTime小于等于endTime", "usdt", "NEXT", 1642576254000,"61e7b401a2fb31166283e085", "", 1642576254000,"", "", "success",0,""]
+  - ["其他账户的产生的订单Id进行查找", "usdt", "PREV", "","", 10, "","", "", "failure",0,""]

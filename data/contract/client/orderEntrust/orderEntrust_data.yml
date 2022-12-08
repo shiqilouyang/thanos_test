@@ -1,0 +1,56 @@
+order_entrust_list:
+  # 查询全部委托
+  # 用例场景,结束时间,是否强平,页码,单页数,开始时间,订单状态,交易对,订单类型,预期返回代码,预期返回错误信息
+  # scene,endTime,forceClose,page,size,startTime,state,symbol,type,code,except_msg
+  - ["main-存在的symbol", "","","","","","","btc_usdt","", 0, ""]
+  - ["不存在的symbol", "","","","","","","btc_usdt1","", 1, "invalid symbol"]
+  - ["main-订单状态NEW", "","","","","","NEW","","", 0, ""]
+  - ["main-订单状态PARTIALLY_FILLED", "","","","","","PARTIALLY_FILLED","","", 0, ""]
+  - ["main-订单状态FILLED", "","","","","","FILLED","","", 0, ""]
+  - ["main-订单状态CANCELED", "","","","","","CANCELED","","", 0, ""]
+  - ["main-订单状态REJECTED", "","","","","","REJECTED","","", 0, ""]
+  - ["main-订单状态EXPIRED", "","","","","","EXPIRED","","", 0, ""]
+  - ["main-订单状态UNFINISHED", "","","","","","UNFINISHED","","", 0, ""]
+  - ["main-订单状态HISTORY", "","","","","","HISTORY","","", 0, ""]
+  - ["不存在的订单状态HISTORY1", "","","","","","HISTORY1","","", 1, "invalid stat"]
+  - ["ORDER订单类型ORDER", "","","","","","","","ORDER", 0, ""]
+##  - ["ENTRUST订单类型", "","","","","","","btc_usdt","ENTRUST", 1, ""]
+  - ["main-是否强平true", "","true","","","","","","", 0, ""]
+  - [ "是否强平true", "","true","","","","","","", 0, "" ]
+  - [ "是否强平为特殊字符", "","tru1e","","","","","","", 1, "invalid_forceClose" ]
+  - ["分页页码为负数", "","","-1","","","","","", 1, "invalid_page"]
+  - ["分页页码为特殊字符", "","","W","","","","","", 1, "invalid_page"]
+  - ["单页数为特殊字符", "","","W","","","","","", 1, "invalid_page"]
+  - ["单页数为负数", "","","-1","","","","","", 1, "invalid_page"]   # 状态码 500，未处理
+  - ["单页数,页码正常", "","","2","1","","","","", 0, ""]
+  - ["main-endTime不存在", "1","","","","","","","", 0, ""]
+  - ["根据startTime查找", "","","","","","","","", 0, ""]
+  - ["根据endTime查找", "","","","","","","","", 0, ""]
+  - ["main-startTime不存在", "","","","","1","","","", 0, ""]
+  - ["main-endTime大于startTime", "","","","","","","","", 0, ""]
+  - ["endTime小于startTime", "","","","","","","","", 0, ""]
+  - ["endTime为特殊字符", "@","","","","","","","", 1, "invalid_endTime"]
+  - ["startTime为特殊字符", "","","","","","@","","", 1, "invalid state"]
+
+
+order_entrust_cancel:
+  # 撤销委托
+  # 用例场景,订单Id,订单类型,预期返回代码,预期返回错误信息
+  # scene,id,type,code,except_msg
+  - ["订单ID与订单类型匹配","","", 0, ""]
+  - ["存在的ID","51386952565398080","", 1, "invalid_type"]
+  - ["不存在的ID","513869525653980801","", 1, "invalid_type"]
+  - ["ORDER订单类型","","", 1, ""]
+  - ["ENTRUST订单类型","","", 1, ""]
+  - ["不正确的订单类型","","ORDER1", 1, "invalid_id"]
+  - ["订单ID与订单类型不匹配","","", 1, "invalid_entrust"]
+
+
+order_entrust_cancel_all:
+  # 撤销全部委托
+  # 用例场景,交易对,预期返回代码,预期返回错误信息
+  #  scene,symbol,code,except_msg
+  - ["该交易对有委托","dao_usdt", 0, ""]
+  - ["该交易对没有委托","fil_usdt", 0, "" ]
+  - ["不存在的交易对","doge_usdt1", 1, "invalid symbol"]
+  - ["交易对为空","", 0, ""]

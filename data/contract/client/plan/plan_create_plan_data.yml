@@ -1,0 +1,433 @@
+# 创建计划委托的测试用例
+# 正向测试用例
+create_plan_success:
+  # 1、买多、ioc、止盈限价单、大于当前价格、标记价格
+  buy_long_ioc_mark_price:
+    name: main-买多、ioc、止盈限价单、大于当前价格、标记价格
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: IOC
+      triggerPriceType: MARK_PRICE
+      price: good_than_mark_price
+      stopPrice: good_than_mark_price
+    expected_result:
+      msgInfo: success
+# 2、买空、FOK、止损限价单、小于当前价格、最新价格
+  sell_short_fok_last_price:
+    name: main-买空、FOK、止损限价单、小于当前价格、最新价格
+    parameter:
+      entrustType: STOP
+      orderSide: SELL
+      origQty: '5'
+      positionSide: SHORT
+      symbol: dao_usdt
+      timeInForce: FOK
+      triggerPriceType: LATEST_PRICE
+      price: less_than_latest_price
+      stopPrice: less_than_latest_price
+    expected_result:
+      msgInfo: success
+# 3、平多、GTX、止盈限价单、大于当前价格、标记价格
+  sell_long_gtx_mark_price:
+    name: main-买平多、GTX、止盈限价单、大于当前价格、标记价格
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: SELL
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: MARK_PRICE
+      price: good_than_mark_price
+      stopPrice: good_than_mark_price
+    expected_result:
+      msgInfo: success
+# 4、平空、GTC、止损限价单、小于当前价格、最新价格
+  buy_short_gtc_mark_price:
+    name: main-平空、GTC、止损限价单、小于当前价格、最新价格
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: SELL
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: less_than_latest_price
+      stopPrice: less_than_latest_price
+    expected_result:
+      msgInfo: success
+# 反向测试用例
+create_plan_failed:
+ #1、委托类型为空
+  entrustType_is_none:
+    name: 委托类型为空
+    parameter:
+      entrustType:
+      orderSide: SELL
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_entrustType
+# 2、无效的委托类型
+  invailed_entrustType:
+    name: 无效的委托类型
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide:
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: lt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_orderSide
+# 3、订单方向为空
+  order_side_is_none:
+    name: 订单方向为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide:
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: lt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_orderSide
+# 4、 无效的订单方向
+  invailed_order_side:
+    name: 无效的订单方向
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: adfadf
+      origQty: '5'
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 5、张数为空
+  origQty_is_none:
+    name: 张数为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty:
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 6、张数非数字
+  origQty_not_num:
+    name: 张数非数字
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: asdf
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: lt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 7、张数为0
+  origQty_is_0:
+    name: 张数为0
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 0
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: lt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 8、张数为负数
+  origQty_is_minus:
+    name: 张数为负数
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: -1
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: lt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 9、持仓方向为空
+  positionSide_is_none:
+    name: 持仓方向为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide:
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_positionSide
+# 10、无效的持仓方向
+  invailed_positionSide:
+    name: 无效的持仓方向
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: adfadsfa
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 11、交易对为空
+  symol_is_none:
+    name: 交易对为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol:
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+# 12、无效的交易对
+  invailed_symol:
+    name: 无效的交易对
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: adf
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+# 13、有效方式为空
+  timeInForce_is_none:
+    name: 有效方式为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce:
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_timeInForce
+# 14、无效的有效方式
+  invailed_timeInForce:
+    name: 无效的有效方式
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: adfadf
+      triggerPriceType: LATEST_PRICE
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 15、触发价格类型为空
+  triggerPriceType_is_none:
+    name: 触发价格类型为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType:
+      price: lt
+      stopPrice: lt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerPriceType
+  # 16、无效的触发价格类型
+  invailed_triggerPriceType:
+    name: 无效的触发价格类型
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: tyjkl
+      price: lt
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+  # 17、价格为空
+  price_is_none:
+    name: 价格为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price:
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_price
+# 18、价格非数字
+  price_not_num:
+    name: 价格非数字
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: adfadf
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_price
+# 19、价格为0
+  price_is_0:
+    name: 价格为0
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: 0
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_price
+# 20、价格为负数
+  price_is_minus:
+    name: 价格为负数
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: -5
+      stopPrice: gt
+    expected_result:
+      msgInfo: failure
+      msg: invalid_price
+# 21、触发价格为空
+  stopPrice_is_none:
+    name: 触发价格为空
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: gt
+      stopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 22、触发价格为0
+  stopPrice_is_0:
+    name: 触发价格为0
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: gt
+      stopPrice: 0
+    expected_result:
+      msgInfo: failure
+      msg: invalid_stopPrice
+# 23、触发价格为负数
+  stopPrice_is_minus:
+    name: 触发价格为0
+    parameter:
+      entrustType: TAKE_PROFIT
+      orderSide: BUY
+      origQty: 5
+      positionSide: LONG
+      symbol: dao_usdt
+      timeInForce: GTX
+      triggerPriceType: LATEST_PRICE
+      price: gt
+      stopPrice: -5
+    expected_result:
+      msgInfo: failure
+      msg: invalid_stopPrice

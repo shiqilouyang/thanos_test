@@ -1,0 +1,37 @@
+# 下单类接口的路径和请求方法
+# 撤销订单
+cancel:
+  path: /v1/order/cancel
+  method: post
+# 撤销所有订单
+cancel_all:
+  path: /v1/order/cancel-all
+  method: post
+# 下单
+create:
+  path: /v1/order/create
+  method: post
+# 批量下单
+create_batch:
+  path: /v1/order/create-batch
+  method: post
+# 根据id查询订单
+detail:
+  path: /v1/order/detail
+  method: get
+# 查询订单
+list:
+  path: /v1/order/list
+  method: get
+# 查询交易明细
+trade_list:
+  path: /v1/order/trade-list
+  method: get
+# 查询历史订单
+list_history:
+  path: /v1/order/list-history
+  method: get
+#  根据id列表查询订单（订单id用,分隔）
+list_by_ids:
+  path: /v1/order/list-by-ids
+  method: post

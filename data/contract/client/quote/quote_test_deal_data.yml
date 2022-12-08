@@ -1,0 +1,64 @@
+# 获取交易对的最新成交信息
+# 正确通过条数和交易对获取
+test_deal_success:
+  test_deal:
+    name: main-正确通过条数和交易对获取
+    parameter:
+      num: 10
+      symbol: dao_usdt
+    expect_result:
+      msgInfo: success
+
+# 仅通过交易对获取数据
+  test_by_symbol:
+    name: main-仅通过交易对获取数据
+    parameter:
+      symbol: dao_usdt
+    expect_result:
+      msgInfo: success
+test_deal_failed:
+# num为o
+  num_is_0:
+    name: num为o
+    parameter:
+      num: 0
+      symbol: dao_usdt
+    expect_result:
+      msgInfo: failure
+      msg: invalid_num
+# num为负数
+  num_is_minus:
+    name: num为负数
+    parameter:
+      num: -1
+      symbol: dao_usdt
+    expect_result:
+      msgInfo: failure
+      msg: invalid_num
+# num为小数
+  test_num_is_float:
+    name: num为小数
+    parameter:
+      num: 1.1
+      symbol: dao_usdt
+    expect_result:
+      msgInfo: failure
+      msg: invalid param
+# num为字符串
+  test_num_is_string:
+    name: num为字符串
+    parameter:
+      num: 二十
+      symbol: dao_usdt
+    expect_result:
+      msgInfo: failure
+      msg: invalid param
+# 交易对不存在
+  test_invalid_symbol:
+    name: 交易对不存在
+    parameter:
+      num: 7
+      symbol: hw_xt
+    expect_result:
+      msgInfo: failure
+      msg: invalid symbol

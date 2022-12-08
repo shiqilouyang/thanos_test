@@ -1,0 +1,106 @@
+# 修改止盈止损测试用例数据
+# 正向测试用例数据
+# 只有止盈修改止盈止损 反方向
+update_profit_success:
+  #  1、多仓正确修改止盈止损修改止盈止损
+  update_long_profit:
+    name: main-多仓正确修改止盈止损修改止盈止损
+    parameter:
+      profitId: long_position
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: success
+  # 2、空仓修改止盈止损修改为止盈
+  update_short_profit:
+    name: 空仓修改止盈止损
+    parameter:
+      profitId: short_position
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: success
+  # 3、多仓止盈止损修改为止损
+  update_long_profit_stop:
+    name: 多仓止盈止损修改为止损
+    parameter:
+      profitId: long_position
+      triggerStopPrice:
+    expected_result:
+      msgInfo: success
+# 反向测试用例数据
+update_profit_failed:
+# 1、止盈止损id为空
+  profit_id_is_none:
+    name: 止盈止损id为空
+    parameter:
+      profitId:
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: Interval Service Error
+# 2、不存在的止盈止损id
+  invalid_profit_id:
+    name: 不存在的止盈止损id
+    parameter:
+      profitId: 123456
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: Interval Service Error
+  # 3、id字符串
+  profit_id_is_string:
+    name: id字符串
+    parameter:
+      profitId: adfadf
+      triggerProfitPrice:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_profitId
+  # 4、多仓止盈价格小于开仓价格
+  long_triggerProfitPrice_less_than_position:
+    name: 多仓止盈价格小于开仓价格
+    parameter:
+      profitId: LONG
+      triggerProfitPrice: less_than_long_position_price
+    expected_result:
+      msgInfo: failure
+      msg: trigger_profit_price_less_than_entry_price
+  # 5、空仓止盈价格大于开仓价格
+  short_triggerStopPrice_good_than_position:
+    name: 空仓止盈价格大于开仓价格
+    parameter:
+      profitId: SHORT
+      triggerProfitPrice: good_than_short_position_price
+    expected_result:
+      msgInfo: failure
+      msg: trigger_profit_price_more_than_entry_price
+# 5、止盈价格非数字
+  triggerProfitPrice_not_num:
+    name: 止盈价格非数字
+    parameter:
+      profitId: LONG
+      triggerProfitPrice: adfas
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerProfitPrice
+# 6、多仓止损价格大于开仓价格
+  long_triggerStopPrice_good_than_position:
+    name: 多仓止损价格大于开仓价格
+    parameter:
+      profitId: LONG
+      triggerStopPrice: good_than_long_position_price
+    expected_result:
+      msgInfo: failure
+      msg: trigger_stop_price_more_than_entry_price
+# 7、空仓止损价格小于开仓价格
+  short_triggerStopPrice_less_than_position:
+    name: 空仓止损价格小于开仓价格
+    parameter:
+      profitId: SHORT
+      triggerStopPrice: less_than_short_position_price
+    expected_result:
+      msgInfo: failure
+      msg: trigger_stop_price_less_than_entry_price

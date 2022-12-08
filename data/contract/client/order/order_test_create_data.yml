@@ -1,0 +1,636 @@
+#下单的测试数据
+#正向的开仓下单数据
+# 余额不足，该交易对关闭交易、管理端该交易对的配置
+order_success:
+  # 1、下单：开仓、买多、ioc的限价单，不带止盈止损
+  long_ioc_limit:
+    name: main-开仓、买多、ioc的限价单，不带止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: IOC
+      orderSide: BUY
+      positionSide: LONG
+    expected_result:
+      msgInfo: success
+  #2、下单：开仓、开空、GTX的限价单，带止盈
+  short_gtx_limit:
+    name: 开仓、开空、GTX的限价单，带止盈
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTX
+      orderSide: SELL
+      positionSide: SHORT
+      triggerProfitPrice: less_than_price
+    expected_result:
+      msgInfo: success
+  # 3、下单：开仓 、开多、FOK限价单，带止损
+  long_fok_limit_trigger_profit_price:
+    name: 开仓 、开多、FOK限价单，带止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: FOK
+      orderSide: BUY
+      positionSide: LONG
+      triggerStopPrice: less_than_price
+    expected_result:
+      msgInfo: success
+  # 4、下单：开仓、开空、GTC限价单，带止盈止损
+  short_gto_limit_trigger_profit:
+    name: 开仓、开空、GTC限价单，带止盈止损
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTC
+      orderSide: SELL
+      positionSide: SHORT
+      triggerProfitPrice: less_than_price
+      triggerStopPrice: good_than_price
+    expected_result:
+      msgInfo: success
+  # 5、下单：开仓、买多、市价带止盈止损单，
+  long__market_trigger_profit:
+    name: 下单-开仓-买空-GTC限价止盈止损单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: MARKET
+      timeInForce: IOC
+      orderSide: BUY
+      positionSide: LONG
+      triggerProfitPrice: good_than_price
+      triggerStopPrice: less_than_price
+    expected_result:
+      msgInfo: success
+# 6、下单：市场价开空，不带止盈止损
+  short__market:
+    name: 下单-开仓-买空-GTC限价止盈止损单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: MARKET
+      timeInForce: IOC
+      orderSide: SELL
+      positionSide: SHORT
+    expected_result:
+      msgInfo: success
+# 正向的平仓下单数据
+  # 7、下单：平空，ioc限价单，
+  buy_short_ioc_limit:
+    name: 平空，ioc限价单
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      orderSide: BUY
+      price:
+      positionSide: SHORT
+    expected_result:
+      msgInfo: success
+
+  # 8、下单：平多、GTX的限价单
+  sell_long_gtx_limit_:
+    name: 平多、GTX的限价单
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTX
+      orderSide: SELL
+      positionSide: LONG
+      price:
+    expected_result:
+      msgInfo: success
+
+  # 9、下单：平空、FOK限价单
+  buy_short_fok_limit:
+    name: 平空，FOK限价单
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: FOK
+      orderSide: BUY
+      positionSide: SHORT
+      price:
+    expected_result:
+      msgInfo: success
+
+  # 10、下单：平多、GTC限价单
+  sell_long_gtc_limit:
+    name: 平空，gtc限价单
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTC
+      orderSide: SELL
+      positionSide: LONG
+      price:
+    expected_result:
+      msgInfo: success
+  # 11、下单：市场平空
+  buy_short_ioc_market:
+    name: 平空，ico市场价
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: MARKET
+      timeInForce: IOC
+      orderSide: BUY
+      positionSide: SHORT
+    expected_result:
+      msgInfo: success
+  # 12、下单：市场平多
+  sell_long_ioc_market:
+    name: 平空，ico市场价
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: MARKET
+      timeInForce: IOC
+      orderSide: SELL
+      positionSide: LONG
+    expected_result:
+      msgInfo: success
+# 反向用例
+order_failed_parm:
+  # 限价开仓单没有价格
+  on_price_limit:
+    name: 限价开仓单没有价格
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      orderSide: SELL
+      positionSide: LONG
+    expected_result:
+      msgInfo: failure
+      msg: invalid_price
+  # 缺失字段orderSide
+  no_orderside:
+    name: 限价开仓单没有价格
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      positionSide: LONG
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_orderSide
+  # 缺失字段orderType
+  no_orderType:
+    name: 缺失字段orderType
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      timeInForce: GTC
+      positionSide: LONG
+      price:
+      orderSide: BUY
+    expected_result:
+      msgInfo: failure
+      msg: invalid_orderType
+  # 缺失字段origQty
+  no_origQty:
+    name: 缺失字段origQty
+    parameter:
+      symbol: dao_usdt
+      # origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      positionSide: LONG
+      price:
+      orderSide: BUY
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+  # 缺失字段positionSide
+  no_positionSide:
+    name: 缺失字段positionSide
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTX
+      #positionSide: LONG
+      price:
+      orderSide: BUY
+    expected_result:
+      msgInfo: failure
+      msg: invalid_positionSide
+  # 缺失字段symbol
+  no_symbol:
+    name: 缺失字段symbol
+    parameter:
+      #symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: FOK
+      positionSide: LONG
+      price:
+      orderSide: BUY
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+  # 无效的orderSide
+  invalid_orderSide:
+    name: 无效的orderSide
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: MARKET
+      timeInForce: FOK
+      positionSide: LONG
+      orderSide: ADD
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+  # 无效的orderType
+  invalid_orderType:
+    name: 无效的orderType
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: mai
+      timeInForce: FOK
+      positionSide: LONG
+      orderSide: BUY
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+  # 数量非数字
+  origQty_not_num:
+    name: 数量非数字
+    parameter:
+      symbol: dao_usdt
+      origQty: adflk
+      orderType: LIMIT
+      timeInForce: FOK
+      positionSide: LONG
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+  # 数量为0
+  origQty_is_0:
+    name: 数量为0
+    parameter:
+      symbol: dao_usdt
+      origQty: 0
+      orderType: LIMIT
+      timeInForce: GTX
+      positionSide: LONG
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+  # 数量为负数
+  origQty_is_minus:
+    name: 数量为负数
+    parameter:
+      symbol: dao_usdt
+      origQty: -1
+      orderType: LIMIT
+      timeInForce: GTX
+      positionSide: LONG
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_origQty
+# 无效的仓位方向
+  invalid_positionSide:
+    name: 无效的positionSide
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTX
+      positionSide: duo
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 无效的交易对
+  invalid_symbol:
+    name: 无效的symbol
+    parameter:
+      symbol: dao_bat
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTX
+      positionSide: LONG
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid symbol
+  # 无效的模式
+  invalid_timeInForce:
+    name: 无效的模式
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: BAT
+      positionSide: LONG
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+      msg: invalid_params
+# 没有仓位平仓的单子
+close_position_order_without_position:
+  # 没有仓位开限价IOC平多单
+  sell_long_ioc_limit:
+    name: 没有仓位开限价IOC平多单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: IOC
+      orderSide: SELL
+      positionSide: LONG
+    expected_result:
+      msgInfo: failure
+      msg: platform_reject
+# 没有仓位开限价GTX平空单
+  buy_short_gtx_limit:
+    name: 没有仓位开限价GTX平空单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTX
+      orderSide: BUY
+      positionSide: SHORT
+    expected_result:
+      msgInfo: failure
+      msg: platform_reject
+# 没有仓位开限价GTC平多单
+  sell_long_gtc_limit:
+    name: 没有仓位开限价GTC平多单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: GTC
+      orderSide: SELL
+      positionSide: LONG
+    expected_result:
+      msgInfo: failure
+      msg: platform_reject
+# 没有仓位开限价FOK平空单
+  buy_short_fok_limit:
+    name: 没有仓位开限价FOK平空单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: LIMIT
+      price:
+      timeInForce: FOK
+      orderSide: BUY
+      positionSide: SHORT
+    expected_result:
+      msgInfo: failure
+      msg: platform_reject
+  # 没有仓位开市价平空单
+  buy_short_market:
+    name: 没有仓位开市价平空单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: MARKET
+      price:
+      timeInForce: IOC
+      orderSide: BUY
+      positionSide: SHORT
+    expected_result:
+      msgInfo: failure
+      msg: platform_reject
+# 没有仓位开市价平多单
+  sell_long_market:
+    name: 没有仓位开市价平空单
+    parameter:
+      symbol: dao_usdt
+      origQty: 10
+      orderType: MARKET
+      price:
+      timeInForce: IOC
+      orderSide: SELL
+      positionSide: LONG
+    expected_result:
+      msgInfo: failure
+      msg: platform_reject
+# 平仓数量大于仓位数量
+close_position_order_failed:
+  # 平多数量大于仓位数量
+  sell_long-failed_by_origqty:
+    name: 平多数量大于仓位数量
+    parameter:
+      symbol: dao_usdt
+      origQty:
+      orderType: LIMIT
+      timeInForce: FOK
+      positionSide: LONG
+      orderSide: SELL
+      price:
+    expected_result:
+      msgInfo: failure
+  # 平空数量大于仓位数量
+  buy_short_failed_by_origqty:
+    name: 平空数量大于仓位数量
+    parameter:
+      symbol: dao_usdt
+      origQty:
+      orderType: LIMIT
+      timeInForce: GTX
+      positionSide: SHORT
+      orderSide: BUY
+      price:
+    expected_result:
+      msgInfo: failure
+# 带止盈利止损的反向用例
+order_failed_profit:
+# 多仓止盈小于开仓价格
+  triggerProfitPrice_less_than_price:
+    name: 多仓止盈小于开仓价格
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTX
+      positionSide: LONG
+      orderSide: BUY
+      price:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+# 多仓止损大于开仓价格
+  triggerStopPrice_bigger_than_price:
+    name: 多仓止损大于开仓价格
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: GTC
+      positionSide: LONG
+      orderSide: BUY
+      price:
+      triggerStopPrice:
+    expected_result:
+      msgInfo: failure
+  # 空仓止盈大于开仓价格
+  triggerProfitPrice_bigger_than_price:
+    name: 空仓止盈大于开仓价格
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: FOK
+      positionSide: SHORT
+      orderSide: SELL
+      price:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+# 空仓止损小于开仓价格
+  triggerStopPrice_less_than_price:
+    name: 空仓止损小于开仓价格
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      positionSide: SHORT
+      orderSide: SELL
+      price:
+      triggerProfitPrice:
+    expected_result:
+      msgInfo: failure
+# 止盈价格非数字
+  invalid_triggerProfitPrice:
+    name: 止盈价格非数字
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      positionSide: SHORT
+      orderSide: SELL
+      price:
+      triggerProfitPrice: asf
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerProfitPrice
+# 止损价格非数字
+  invalid_triggerStopPrice:
+    name: 止损价格非数字
+    parameter:
+      symbol: dao_usdt
+      origQty: 5
+      orderType: LIMIT
+      timeInForce: IOC
+      positionSide: SHORT
+      orderSide: SELL
+      price:
+      triggerStopPrice: asff
+    expected_result:
+      msgInfo: failure
+      msg: invalid_triggerStopPrice
+
+# 参数约束超过管理端的配置
+#parameter_unmatched_management_station:
+#  # 价格小于管理端配置的最小值
+#  price_less_min:
+#    name: 价格小于管理端配置的最小值
+#    parameter:
+#      symbol: dao_usdt
+#      origQty: 5
+#      orderType: LIMIT
+#      timeInForce: IOC
+#      positionSide: SHORT
+#      orderSide: SELL
+#      price: less_than_min
+#    expected_result:
+#      msgInfo: failure
+#      msg: open_order_price_limit
+#  # 价格大于管理端配置的最大值
+#  price_than_max:
+#    name: 价格大于管理端配置的最大值
+#    parameter:
+#      symbol: dao_usdt
+#      origQty: 5
+#      orderType: LIMIT
+#      timeInForce: IOC
+#      positionSide: LONG
+#      orderSide: BUY
+#      price: more_than_max
+#    expected_result:
+#      msgInfo: failure
+#      msg: open_order_price_limit
+#  # 价格精度大于管理端配置的值
+#  precision_more_than_management:
+#    name: 价格精度大于管理端配置的值
+#    parameter:
+#      symbol: dao_usdt
+#      origQty: 5
+#      orderType: LIMIT
+#      timeInForce: IOC
+#      positionSide: SHORT
+#      orderSide: SELL
+#      price: precision_more_than_management
+#    expected_result:
+#      msgInfo: failure
+#      msg: invalid_price
+#  # 止盈价格精度大于管理端配置的值 bug未修复
+#  profit_precision_more_than_management:
+#    name: 止盈价格精度大于管理端配置的值
+#    parameter:
+#      symbol: dao_usdt
+#      origQty: 5
+#      orderType: LIMIT
+#      timeInForce: IOC
+#      positionSide: LONG
+#      orderSide: BUY
+#      price: correct
+#      triggerProfitPrice: precision_more_than_management
+#    expected_result:
+#      msgInfo: failure
+#      msg: invalid_trigger_profit_price
+#  # 止损价格精度大于管理端配置的值 bug未修复
+#  stop_profit_precision_more_than_management:
+#    name: 价格精度大于管理端配置的值
+#    parameter:
+#      symbol: dao_usdt
+#      origQty: 5
+#      orderType: LIMIT
+#      timeInForce: IOC
+#      positionSide: LONG
+#      orderSide: BUY
+#      price: correct
+#      triggerStopPrice: precision_more_than_management
+#    expected_result:
+#      msgInfo: failure
+#      msg: invalid_trigger_stop_price
