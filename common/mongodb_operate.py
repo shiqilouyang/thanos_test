@@ -101,10 +101,10 @@ class MongoDb():
     def get_find_count(self, query={}):
         return self.db_col.find(query).count()
     
-    def get_repeat_date(self, field}):
+    def get_repeat_date(self, query={}}):
         # 查找集合中有重复的数据，显示重复的数据和重复的个数
         pipeline =[
-            { $group: { _id : '${}'.format(field), count: { $sum : 1 } } },
+            { $group: query.update(count: { $sum : 1 })},
             { $match: { count: { $gt : 1} } }
           ]
         return list(db.db_col.aggregate(pipeline))
