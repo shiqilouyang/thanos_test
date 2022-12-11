@@ -100,7 +100,21 @@ class MongoDb():
     # 统计查询结果的总数
     def get_find_count(self, query={}):
         return self.db_col.find(query).count()
-
+    
+    def get_repeat_date(self, field}):
+        # 查找集合中有重复的数据，显示重复的数据和重复的个数
+        pipeline =[
+            { $group: { _id : '${}'.format(field), count: { $sum : 1 } } },
+            { $match: { count: { $gt : 1} } }
+          ]
+        return list(db.db_col.aggregate(pipeline))
+        
+    '''
+        db.getCollection('users').aggregate([
+        { $group: { _id : '$openid', count: { $sum : 1 } } },
+        { $match: { count: { $gt : 1} } }
+      ])
+    '''
 
 def update_account_balance(data):
     '''更新账户余额'''
